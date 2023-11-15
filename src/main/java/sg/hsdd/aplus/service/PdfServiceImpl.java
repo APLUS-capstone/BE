@@ -5,9 +5,13 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 import org.aspectj.apache.bcel.classfile.Field;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sg.hsdd.aplus.controller.dto.OptionDTO;
+import sg.hsdd.aplus.entity.QuestionRoom;
+import sg.hsdd.aplus.repository.QuestionRoomRepository;
+import sg.hsdd.aplus.service.vo.PdfStringVO;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,9 +21,11 @@ import java.io.IOException;
 @Slf4j
 public class PdfServiceImpl implements PdfService{
 
+    @Autowired
+    private QuestionRoomRepository questionRoomRepository;
 
     @Override
-    public String extractText(MultipartFile multipartFile, OptionDTO optionDTO) throws IOException {
+    public PdfStringVO extractText(MultipartFile multipartFile, int userUid) throws IOException {
 //        File file = new File("/Users/hong/" + multipartFile.getOriginalFilename());
 //        multipartFile.transferTo(file);
 //        File file = new File("/Users/hong/Downloads/"+"test.pdf");
@@ -39,6 +45,17 @@ public class PdfServiceImpl implements PdfService{
         String summaryText = Tstripper.getText(document);
 //        log.info("{extracted String} ==>" + summaryText);
 
-        return summaryText;
+        QuestionRoom questionRoom = QuestionRoom.builder()
+                .userUid(userUid)
+                .pdfString(summaryText)
+                .build();
+
+        questionRoomRepository.save(questionRoom);
+
+        PdfStringVO pdfStringVO = PdfStringVO.builder()
+                .pdfString(summaryText)
+                .build();
+
+        return pdfStringVO;
     }
 }

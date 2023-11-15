@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import sg.hsdd.aplus.controller.dto.OptionDTO;
+import sg.hsdd.aplus.controller.dto.PdfSaveDTO;
 import sg.hsdd.aplus.service.PdfService;
+import sg.hsdd.aplus.service.vo.PdfStringVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -24,12 +26,11 @@ public class PdfController {
     @RequestMapping(value = "/save", method = RequestMethod.POST
             ,consumes = {MediaType.APPLICATION_JSON_VALUE ,MediaType.MULTIPART_FORM_DATA_VALUE}
     )
-    public void uploadFile(
+    public PdfStringVO uploadFile(
             @RequestPart("pdf") MultipartFile multipartFile,
-            @RequestPart("data") OptionDTO optionDTO,
+            @RequestPart("userUid") PdfSaveDTO pdfSaveDTO,
             HttpServletRequest request
     ) throws IllegalStateException, IOException {
-        String test = pdfService.extractText(multipartFile, optionDTO);
-        System.out.println("{extracted String} ==>" + test);
+        return pdfService.extractText(multipartFile, pdfSaveDTO.getUserUid());
     }
 }
