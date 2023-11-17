@@ -12,10 +12,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name="question_room")
+@Table(name="chatroom")
 @Entity
 @SuperBuilder
-public class QuestionRoom {
+public class Chatroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomUid;

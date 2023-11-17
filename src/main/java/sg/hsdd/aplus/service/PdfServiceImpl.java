@@ -4,13 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
-import org.aspectj.apache.bcel.classfile.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sg.hsdd.aplus.controller.dto.OptionDTO;
-import sg.hsdd.aplus.entity.QuestionRoom;
-import sg.hsdd.aplus.repository.QuestionRoomRepository;
+import sg.hsdd.aplus.entity.Chatroom;
+import sg.hsdd.aplus.repository.ChatroomRepository;
 import sg.hsdd.aplus.service.vo.PdfStringVO;
 
 import java.io.File;
@@ -22,7 +20,7 @@ import java.io.IOException;
 public class PdfServiceImpl implements PdfService{
 
     @Autowired
-    private QuestionRoomRepository questionRoomRepository;
+    private ChatroomRepository chatroomRepository;
 
     @Override
     public PdfStringVO extractText(MultipartFile multipartFile, int userUid) throws IOException {
@@ -45,12 +43,17 @@ public class PdfServiceImpl implements PdfService{
         String summaryText = Tstripper.getText(document);
 //        log.info("{extracted String} ==>" + summaryText);
 
-        QuestionRoom questionRoom = QuestionRoom.builder()
+        if(document != null )
+        {
+            document.close();
+        }
+
+        Chatroom chatroom = Chatroom.builder()
                 .userUid(userUid)
                 .pdfString(summaryText)
                 .build();
 
-        questionRoomRepository.save(questionRoom);
+        chatroomRepository.save(chatroom);
 
         PdfStringVO pdfStringVO = PdfStringVO.builder()
                 .pdfString(summaryText)
