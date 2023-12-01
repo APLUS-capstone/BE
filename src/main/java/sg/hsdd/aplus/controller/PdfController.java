@@ -8,10 +8,14 @@ import org.springframework.web.multipart.MultipartFile;
 import sg.hsdd.aplus.controller.dto.OptionDTO;
 import sg.hsdd.aplus.controller.dto.PdfSaveDTO;
 import sg.hsdd.aplus.service.PdfService;
+import sg.hsdd.aplus.service.vo.ChatroomUidVO;
 import sg.hsdd.aplus.service.vo.PdfStringVO;
+import sg.hsdd.aplus.service.vo.QuestionListVO;
+import sg.hsdd.aplus.service.vo.QuestionVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +33,11 @@ public class PdfController {
             HttpServletRequest request
     ) throws IllegalStateException, IOException {
         return pdfService.extractText(multipartFile, pdfSaveDTO.getUserUid());
+    }
+
+    @PostMapping("/option")
+    public QuestionListVO generateQuestion(@RequestBody OptionDTO optionDTO){
+        return pdfService.generateQuestion(optionDTO);
     }
 
 }

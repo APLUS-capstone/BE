@@ -30,6 +30,8 @@ dependencies {
 
 	implementation 'mysql:mysql-connector-java:8.0.32'//mysql
 	implementation 'org.apache.pdfbox:pdfbox:2.0.24' //pdfbox
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux' //webclient
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1' //JSON parser
 }
 
 tasks.named('test') {

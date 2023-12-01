@@ -8,7 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OptionDTO {
-    private int type;
+    private int roomUid;
     private int number;
+    private int type;
+    private int choice;
     private int language;
 }
