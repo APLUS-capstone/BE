@@ -11,7 +11,9 @@ import sg.hsdd.aplus.exception.NotFoundException;
 import sg.hsdd.aplus.repository.ChatroomRepository;
 import sg.hsdd.aplus.repository.QuestionRepository;
 import sg.hsdd.aplus.repository.UserInfoRepository;
+import sg.hsdd.aplus.service.vo.ChatroomUidListVO;
 import sg.hsdd.aplus.service.vo.ChatroomUidVO;
+import sg.hsdd.aplus.service.vo.QuestionHistoryVO;
 import sg.hsdd.aplus.service.vo.QuestionVO;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class ChatroomServiceImpl implements ChatroomService{
     @Autowired
     private QuestionRepository questionRepository;
 
-    public List<ChatroomUidVO> getChatroomUid(int userUid){
+    public ChatroomUidListVO getChatroomUid(int userUid){
         Optional<UserInfo> userInfoOptional = userInfoRepository.findByUserUid(userUid);
 
         if(userInfoOptional.isPresent()){
@@ -39,14 +41,18 @@ public class ChatroomServiceImpl implements ChatroomService{
                         .build())
                     .collect(Collectors.toList());
 
-            return chatroomUidVOS;
+            ChatroomUidListVO chatroomUidListVO = ChatroomUidListVO.builder()
+                    .list(chatroomUidVOS)
+                    .build();
+
+            return chatroomUidListVO;
         }
         else{
             throw new NotFoundException("{ERROR} =====> USER_UID_NOT_FOUND");
         }
     }
 
-    public List<QuestionVO> getChatHistory(int userUid, int roomUid){
+    public QuestionHistoryVO getChatHistory(int userUid, int roomUid){
         Optional<Chatroom> chatroomOptional = chatroomRepository.findByRoomUid(roomUid);
 
         if(chatroomOptional.isPresent() && chatroomOptional.get().getUserUid() == userUid){
@@ -58,7 +64,11 @@ public class ChatroomServiceImpl implements ChatroomService{
                         .build())
                     .collect(Collectors.toList());
 
-            return questionVOS;
+            QuestionHistoryVO questionHistoryVO = QuestionHistoryVO.builder()
+                    .list(questionVOS)
+                    .build();
+
+            return questionHistoryVO;
         }
         else{
             throw new NotFoundException("{ERROR} =====> ROOM_UID_OR_USER_UID_NOT_FOUND");

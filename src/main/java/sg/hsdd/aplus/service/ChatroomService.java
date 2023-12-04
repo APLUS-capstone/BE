@@ -1,11 +1,13 @@
 package sg.hsdd.aplus.service;
 
+import sg.hsdd.aplus.service.vo.ChatroomUidListVO;
 import sg.hsdd.aplus.service.vo.ChatroomUidVO;
+import sg.hsdd.aplus.service.vo.QuestionHistoryVO;
 import sg.hsdd.aplus.service.vo.QuestionVO;
 
 import java.util.List;
 
 public interface ChatroomService {
-    List<ChatroomUidVO> getChatroomUid(int userUid);
-    List<QuestionVO> getChatHistory(int userUid, int roomUid);
+    ChatroomUidListVO getChatroomUid(int userUid);
+    QuestionHistoryVO getChatHistory(int userUid, int roomUid);
 }

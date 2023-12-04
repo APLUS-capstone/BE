@@ -79,9 +79,11 @@ public class PdfServiceImpl implements PdfService{
                     .pdfString(summaryText)
                     .build();
 
-            chatroomRepository.save(chatroom);
+            Chatroom savedChatroom = chatroomRepository.save(chatroom);
+            int roomUid = savedChatroom.getRoomUid();
 
             PdfStringVO pdfStringVO = PdfStringVO.builder()
+                    .roomUid(roomUid)
                     .pdfString(summaryText)
                     .build();
 
@@ -198,6 +200,11 @@ public class PdfServiceImpl implements PdfService{
                     String answer = (String) jsonObject.get("answer");
                     String solution = (String) jsonObject.get("solution");
 
+                    log.info("{question} ======> " + question);
+                    log.info("{answer} ======> " + answer);
+                    log.info("{solution} ======> " + solution);
+                    log.info("-------------------------------------------------");
+
                     Question question1 = Question.builder()
                                     .roomUid(optionDTO.getRoomUid())
                                     .typeUid(optionDTO.getType())
@@ -217,10 +224,7 @@ public class PdfServiceImpl implements PdfService{
                             .build();
                     questionVOS.add(questionVO);
 
-                    log.info("{question} ======> " + question);
-                    log.info("{answer} ======> " + answer);
-                    log.info("{solution} ======> " + solution);
-                    log.info("-------------------------------------------------");
+
                 }
             } catch (ParseException e) {
                 throw new RuntimeException(e);

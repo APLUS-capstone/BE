@@ -5,11 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class PdfStringVO {
-    private int roomUid;
-    private String pdfString;
+public class ChatroomUidListVO {
+    private List<ChatroomUidVO> list;
 }
