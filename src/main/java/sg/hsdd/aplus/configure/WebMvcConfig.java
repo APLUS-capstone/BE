@@ -12,6 +12,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private final JwtTokenInterceptor jwtTokenInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        log.info("{}====>addInterceptors", registry);
+        registry.addInterceptor(jwtTokenInterceptor)
+                .excludePathPatterns("/css/**", "/images/**", "/js/**", "/login/**");
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         log.info("{}====>addCorsMappings", registry);
